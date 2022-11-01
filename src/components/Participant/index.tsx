@@ -2,23 +2,12 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { styles } from "./styles";
 
 interface nameProps {
-  name?: string;
+  name: string;
+  onRemove: () => void
 }
 
-export function Participant({ name }: nameProps) {
-  function onRemove() {
-    Alert.alert("Remover", `Deseja remover o participante ${name}?`,[
-        {
-          text: "Sim",
-          onPress: () => Alert.alert("Participante deletado!"),
-        },
-        {
-          text: "Não",
-          style: "cancel",
-        },
-      ]);
-  }
-
+export function Participant({ name, onRemove }: nameProps) {
+  
   return (
     <View style={styles.form}>
       <Text style={styles.input}>{name}</Text>

@@ -4,13 +4,31 @@ import { Participant } from "../../components/Participant";
 import { styles } from "./styles";
 
 export default function Home() {
-  const participantes = ["diego","diego","diego","diego","diego","diego","diego","diego"]
+  const [participantes, setParticipantes] = useState<string[]>([])
+  const [participantName, setParticipantname] = useState("")
 
   function handlerPartcipantAdd() {
-    if(participantes.includes("diego")){
-      Alert.alert("Participante existente.", "Já existe um participante com esse nome.")
+    if(participantes.includes(participantName)){
+      return Alert.alert("Participante existente.", "Já existe um participante com esse nome.")
     }
+
+    setParticipantes(preventParticipant => [...preventParticipant, participantName])
+    setParticipantname("")
   }
+
+  function onRemove(name: string ) {
+    Alert.alert("Remover", `Deseja remover o participante ${name}?`,[
+        {
+          text: "Sim",
+          onPress: () =>setParticipantes(prevestate => prevestate.filter(participant => participant != name)),
+        },
+        {
+          text: "Não",
+          style: "cancel",
+        },
+      ]);
+  }
+
 
   return (
     <View style={styles.container}>
@@ -25,6 +43,8 @@ export default function Home() {
           style={styles.input}
           placeholder="Nome do participante"
           placeholderTextColor="#6B6B6B"
+          onChangeText={setParticipantname}
+          value={participantName}
           
         ></TextInput>
 
@@ -37,7 +57,7 @@ export default function Home() {
         data={participantes}
         keyExtractor={item => item}
         renderItem={({item}) => (
-          <Participant key={item} name={item}/>
+          <Participant key={item} name={item} onRemove={() => onRemove(item)}/>
         )}
         ListEmptyComponent={()=> (
           <Text>
